@@ -5,7 +5,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import databaseConfig from './config/database.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
-import { SessionModule } from './session/session.module';
 import { UsersModule } from './users/users.module';
 import { UserEntity } from './users/entities/user.entity';
 
@@ -31,7 +30,6 @@ import { UserEntity } from './users/entities/user.entity';
       }),
     }),
     AuthModule,
-    SessionModule,
     UsersModule,
   ],
   controllers: [AppController],
