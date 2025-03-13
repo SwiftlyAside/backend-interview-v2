@@ -3,7 +3,7 @@ import {
   Injectable,
   UnprocessableEntityException,
 } from '@nestjs/common';
-import { UsersRepository } from './user.repository';
+import { UsersRepository } from './repositories/user.repository';
 import { User } from './domain/user';
 import { CreateUserDto } from './dto/create-user.dto';
 import bcrypt from 'bcryptjs';

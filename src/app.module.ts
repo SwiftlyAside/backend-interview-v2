@@ -9,6 +9,7 @@ import { UsersModule } from './users/users.module';
 import { UserEntity } from './users/entities/user.entity';
 import { ProductModule } from './product/product.module';
 import { ProductEntity } from './product/entities/product.entity';
+import { ProductLikeEntity } from './product/entities/product-like.entity';
 
 @Module({
   imports: [
@@ -26,7 +27,7 @@ import { ProductEntity } from './product/entities/product.entity';
         username: configService.get<string>('database.username'),
         password: configService.get<string>('database.password'),
         database: configService.get<string>('database.database'),
-        entities: [UserEntity, ProductEntity],
+        entities: [UserEntity, ProductEntity, ProductLikeEntity],
         synchronize: true,
         logging: true,
       }),

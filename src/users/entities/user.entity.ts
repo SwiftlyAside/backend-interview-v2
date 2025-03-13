@@ -1,10 +1,11 @@
 import {
   Column,
   CreateDateColumn,
-  Entity,
+  Entity, OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { ProductLikeEntity } from '../../product/entities/product-like.entity';
 
 @Entity({
   name: 'user',
@@ -21,6 +22,9 @@ export class UserEntity {
 
   @Column({ nullable: true })
   name: string;
+
+  @OneToMany(() => ProductLikeEntity, (productLike) => productLike.product)
+  productLikes: ProductLikeEntity[];
 
   @CreateDateColumn()
   createdAt: Date;

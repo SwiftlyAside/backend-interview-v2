@@ -6,12 +6,16 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { Product } from './domain/product';
 import { ProductMapper } from './mapper/product.mapper';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { ProductLikeRepository } from './repositories/product-like.repository';
+import { UserEntity } from '../users/entities/user.entity';
 
 @Injectable()
 export class ProductService {
   constructor(
     @InjectRepository(ProductEntity)
     private readonly productRepository: Repository<ProductEntity>,
+    @InjectRepository(ProductLikeRepository)
+    private readonly productLikeRepository: ProductLikeRepository,
   ) {}
 
   async createProduct(createProductDto: CreateProductDto): Promise<Product> {
@@ -72,5 +76,32 @@ export class ProductService {
   async remove(id: number): Promise<void> {
     const product = await this.productRepository.findOne({ where: { id } });
     await this.productRepository.remove(product);
+  }
+
+  async toggleLike(user: { id: number }, productId: number): Promise<void> {
+    const product = await this.productRepository.findOne({
+      where: { id: productId },
+    });
+
+    if (!product) {
+      throw new NotFoundException('Product not found');
+    }
+
+    const existingLike = await this.productLikeRepository.findLike(
+      user.id,
+      productId,
+    );
+
+    if (existingLike) {
+      await this.productLikeRepository.removeLike(existingLike);
+    } else {
+      const userEntity = new UserEntity();
+      userEntity.id = user.id;
+      await this.productLikeRepository.addLike(userEntity, product);
+    }
+  }
+
+  async getLikesCount(productId: number): Promise<number> {
+    return this.productLikeRepository.countLikes(productId);
   }
 }
