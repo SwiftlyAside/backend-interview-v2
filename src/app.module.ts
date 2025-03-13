@@ -4,6 +4,10 @@ import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import databaseConfig from './config/database.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './auth/auth.module';
+import { SessionModule } from './session/session.module';
+import { UsersModule } from './users/users.module';
+import { UserEntity } from './users/entities/user.entity';
 
 @Module({
   imports: [
@@ -21,11 +25,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         username: configService.get<string>('database.username'),
         password: configService.get<string>('database.password'),
         database: configService.get<string>('database.database'),
-        entities: [__dirname + '/../**/*.entity.{js,ts}'],
+        entities: [UserEntity],
         synchronize: true,
         logging: true,
       }),
     }),
+    AuthModule,
+    SessionModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
